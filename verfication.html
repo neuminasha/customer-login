@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERIFY-CODE</title>
+</head>
+<body>
+    <style>
+        body{
+        background-image: url(https://cdn.pixabay.com/photo/2020/04/12/18/13/background-5035258_640.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .sec-1{
+        border: 1px solid black;
+        width: 25%;
+        height: 250px;
+        background-color: rgba(0, 0, 0, 0.386);
+        margin: 150px 0 0 520px;
+        border-radius: 20px;
+        line-height: 4;
+       text-align: center;
+    }
+    button{
+        background-color: rgb(179, 184, 182);
+        border-radius: 20px;
+        font-weight:bold;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        border: none;
+    }
+    .div-1 input{
+        background-color:rgba(255, 255, 255, 0);
+       border: none;
+       border-bottom: 2px solid rgba(0, 0, 0, 0.627);
+       width: 70%; 
+       height: 40px; 
+       color: white;
+       font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    .div-1{
+        text-align: center;
+        padding-top: 40px;
+    }
+    </style>
+    <div class="sec-1">
+        <div class="div-1">
+            <form id="emailForm">
+
+            <label for="email"></label>
+             <input type="email" id="email" placeholder="Enter your email" required>
+                <input type="number" placeholder=" Verfication Code">
+        </div>
+        <div class="div-5" >
+            <button type="submit" ondblclick="verIfy()">Verify</button>
+           </div>
+        </form>
+        <p id="message"></p>
+    </div>
+    <script>
+         function verify() {
+            alert("OTP SENT");
+        }
+
+        const emailForm = document.getElementById('emailForm');
+        const message = document.getElementById('message');
+
+        emailForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+
+            fetch('/send-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    message.textContent = 'OTP sent to your email!';
+                    message.style.color = 'green';
+                } else {
+                    message.textContent = 'Failed to send OTP. Please try again.';
+                    message.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                message.textContent = 'An error occurred. Please try again.';
+                message.style.color = 'red';
+            });
+        });
+
+    </script>
+</body>
+</html>
+
